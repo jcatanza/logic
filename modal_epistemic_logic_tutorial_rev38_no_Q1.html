@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Primer on Modal and Epistemic Logic — rev38</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; padding: 2rem 1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; color: #1a1a1a; line-height: 1.7; }
+.wrap { max-width: 740px; margin: 0 auto; }
+h1 { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: #6366f1; text-transform: uppercase; margin: 0 0 .35rem; }
+.title-main { font-size: 28px; font-weight: 600; color: #1a1a1a; margin: 0 0 .6rem; line-height: 1.25; letter-spacing: -.01em; }
+.author-block { margin: 0 0 .5rem; }
+.author-name { font-size: 15px; font-weight: 500; color: #1a1a1a; margin: 0 0 .15rem; }
+.author-affil { font-size: 13px; color: #666; margin: 0 0 .1rem; }
+.author-email { font-size: 13px; color: #6366f1; text-decoration: none; }
+.author-email:hover { text-decoration: underline; }
+.header-rule { border: none; border-top: 2px solid #6366f1; margin: 1rem 0 1rem; opacity: .2; }
+.sub { font-size: 13px; color: #666; margin-bottom: 1.75rem; line-height: 1.65; }
+.nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.75rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0d8; }
+.nb { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1px solid #ccc; background: transparent; color: #555; cursor: pointer; transition: all .15s; }
+.nb.on { background: #f0f0ec; color: #1a1a1a; border-color: #999; font-weight: 500; }
+.nb:hover { background: #f0f0ec; color: #1a1a1a; }
+.sec { display: none; }
+.sec.on { display: block; }
+h2 { font-size: 20px; font-weight: 500; margin: 0 0 .5rem; }
+h3 { font-size: 15px; font-weight: 600; margin: 1.6rem 0 .4rem; color: #1a1a1a; border-left: 3px solid #d0d0c8; padding-left: .6rem; }
+h4 { font-size: 13px; font-weight: 600; margin: 1.1rem 0 .25rem; color: #333; }
+p { font-size: 14px; line-height: 1.75; color: #444; margin: 0 0 .9rem; }
+.tag { font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 10px; display: inline-block; margin-bottom: .75rem; }
+.tc { background: #dbeafe; color: #1d4ed8; }
+.tf { background: #fef3c7; color: #92400e; }
+.ta { background: #dcfce7; color: #166534; }
+.tp { background: #f3e8ff; color: #6b21a8; }
+.card { background: #f3f3ef; border: 1px solid #e0e0d8; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.card p { margin: 0; }
+.blue-card { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.blue-card p { margin: 0; color: #1e40af; font-size: 13px; }
+.green-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.green-card p { margin: 0; color: #166534; font-size: 13px; }
+.warn-card { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.warn-card p { margin: 0; color: #78350f; font-size: 13px; }
+.red-card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 10px; padding: .9rem 1.1rem; margin: .75rem 0; }
+.red-card p { margin: 0; color: #9f1239; font-size: 13px; }
+.ai { border-left: 3px solid #93c5fd; padding-left: .9rem; margin: .75rem 0; }
+.ai p { font-style: italic; margin: 0; color: #555; }
+.fm { font-family: 'Courier New', Courier, monospace; font-size: 13px; background: #f3f3ef; border: 1px solid #e0e0d8; border-radius: 8px; padding: .7rem .9rem; margin: .65rem 0; overflow-x: auto; color: #1a1a1a; white-space: pre-wrap; line-height: 1.7; }
+.fm-inline { font-family: 'Courier New', Courier, monospace; font-size: 13px; background: #f3f3ef; padding: 1px 5px; border-radius: 4px; color: #1a1a1a; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: .75rem 0; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: .75rem 0; }
+.mc { background: #fff; border: 1px solid #e0e0d8; border-radius: 8px; padding: .65rem .9rem; }
+.mc .lb { font-size: 11px; color: #999; margin-bottom: .2rem; font-weight: 700; letter-spacing: .02em; }
+.mc .vl { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: .75rem 0; }
+th { text-align: left; font-weight: 600; padding: .5rem .7rem; background: #f3f3ef; border: 1px solid #e0e0d8; color: #1a1a1a; }
+td { padding: .5rem .7rem; border: 1px solid #e0e0d8; color: #444; vertical-align: top; }
+td.fm-cell { font-family: 'Courier New', monospace; font-size: 12px; }
+.hl td { background: #dcfce7; }
+.qb { border: 1px solid #e0e0d8; border-radius: 10px; overflow: hidden; margin: 1.25rem 0; }
+.qq { background: #f3f3ef; padding: .7rem .9rem; font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.qo { display: block; width: 100%; text-align: left; padding: .5rem .9rem; cursor: pointer; border: none; border-top: 1px solid #e0e0d8; font-size: 13px; color: #444; background: #fff; transition: background .1s; }
+.qo:hover { background: #f9f9f7; }
+.qo.ok { background: #dcfce7; color: #166534; font-weight: 500; }
+.qo.no { background: #fee2e2; color: #991b1b; }
+.fb { padding: .65rem .9rem; font-size: 13px; display: none; background: #f3f3ef; border-top: 1px solid #e0e0d8; color: #444; line-height: 1.7; }
+.step { display: flex; gap: 10px; margin-bottom: 4px; }
+.dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 3px; }
+.dd { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.da { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+.dp { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+.sb { padding-bottom: 1rem; }
+.st { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: .2rem; }
+.sd { font-size: 13px; color: #555; line-height: 1.65; }
+.world-diagram { display: flex; flex-wrap: wrap; gap: 16px; margin: 1rem 0; align-items: center; }
+.world { border: 1.5px solid #ccc; border-radius: 10px; padding: .65rem .9rem; background: #fff; min-width: 140px; font-size: 13px; }
+.world.actual { border-color: #3b82f6; background: #eff6ff; }
+.world.accessible { border-color: #86efac; background: #f0fdf4; }
+.world.inaccessible { border-color: #e0e0d8; background: #f9f9f7; color: #aaa; }
+.world .wlabel { font-size: 11px; font-weight: 600; color: #999; margin-bottom: .3rem; text-transform: uppercase; }
+.world.actual .wlabel { color: #1d4ed8; }
+.world.accessible .wlabel { color: #166534; }
+.arrow { font-size: 24px; color: #999; display: flex; align-items: center; padding: 0 4px; }
+.divider { border: none; border-top: 1px solid #e0e0d8; margin: 1.5rem 0; }
+.defn { background: #fff; border: 1px solid #e0e0d8; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: .75rem 1rem; margin: .75rem 0; }
+.defn .defn-term { font-size: 12px; font-weight: 700; color: #6366f1; letter-spacing: .03em; margin-bottom: .2rem; }
+.defn p { margin: 0; font-size: 13px; }
+@media (max-width: 500px) { .g2, .g3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Modal &amp; Epistemic Logic</h1>
+<p class="title-main">A Primer on Modal and Epistemic Logic</p>
+<div class="author-block">
+  <p class="author-name">Joseph Catanzarite</p>
+  <p class="author-affil">Johns Hopkins University · Whiting School of Engineering</p>
+  <a class="author-email" href="mailto:jcat@alumni.caltech.edu">jcat@alumni.caltech.edu</a> &nbsp;·&nbsp;
+  <a class="author-email" href="mailto:jcatanz@gmail.com">jcatanz@gmail.com</a> &nbsp;·&nbsp;
+  <a class="author-email" href="mailto:jcatanz3@jh.edu">jcatanz3@jh.edu</a>
+</div>
+<hr class="header-rule">
+<p class="sub">A self-contained reference tutorial. Work through each section in order. By the end you will have the formal machinery to read and construct modal logic proofs about Belief-Desire-Intention (BDI) agents.</p>
+
+<div class="nav">
+  <button class="nb on" id="b-why"       onclick="goTab('why')">0. Why this matters</button>
+  <button class="nb"    id="b-prop"      onclick="goTab('prop')">1. Propositional logic</button>
+  <button class="nb"    id="b-worlds"    onclick="goTab('worlds')">2. Possible worlds</button>
+  <button class="nb"    id="b-modal"     onclick="goTab('modal')">3. Modal logic</button>
+  <button class="nb"    id="b-axioms"    onclick="goTab('axioms')">4. Axioms</button>
+  <button class="nb"    id="b-epistemic" onclick="goTab('epistemic')">5. Epistemic logic</button>
+  <button class="nb"    id="b-bounded"   onclick="goTab('bounded')">6. Bounded reasoning</button>
+  <button class="nb"    id="b-bdi"       onclick="goTab('bdi')">7. BDI (Belief-Desire-Intention) &amp; Rationality</button>
+</div>
+
+
+<!-- ===================================================== SECTION 0 -->
+<div id="s-why" class="sec on">
+<span class="tag tc">motivation</span>
+<h2>Why do we need modal and epistemic logic?</h2>
+
+<p>Classical propositional and predicate logic are powerful tools, but they have a fundamental limitation for reasoning about AI agents: they only deal with what <em>is</em> true, not with what an agent <em>believes</em>, <em>knows</em>, or considers <em>possible</em>.</p>
+
+<p>Consider these four sentences:</p>
+<div class="card">
+  <p style="margin-bottom:.5rem">1. "It is raining." &nbsp;← classical logic handles this fine: the statement is true or false</p>
+  <p style="margin-bottom:.5rem">2. "Alice <strong>believes</strong> it is raining." &nbsp;← classical logic has no operator for "believes"</p>
+  <p style="margin-bottom:.5rem">3. "Bachelors are <strong>necessarily</strong> unmarried." &nbsp;← classical logic has no way to distinguish necessary truth from contingent truth</p>
+  <p style="margin-bottom:0">4. "Bob <strong>knows</strong> that Alice believes it is raining." &nbsp;← classical logic cannot express nested mental states at all</p>
+</div>
+
+<p>Sentences 2–4 involve <strong>modalities</strong> — ways in which something is true, or who holds it to be true. Modal logic adds the operators needed to handle them. Epistemic logic is a specialization of modal logic focused specifically on knowledge and belief.</p>
+
+<div class="warn-card"><p><strong>Note on sentence 3:</strong> Classical logic can prove that "bachelors are unmarried" is true — given the definition of bachelor, it follows by logic. What it cannot express is the <em>modal status</em> of that truth: the distinction between something that is true as a matter of definition (could not be otherwise) versus something that happens to be true right now but could have been otherwise, like "it is raining." Modal logic adds that distinction.</p></div>
+
+<h3>Why agents specifically need this</h3>
+<p>An AI agent operating in the world must reason about:</p>
+<div class="g2">
+  <div class="mc"><div class="lb">Its own beliefs</div><div class="vl">"I believe the door is unlocked" — may be wrong</div></div>
+  <div class="mc"><div class="lb">Knowledge vs belief</div><div class="vl">"I know I am in room A" vs "I think the key is here"</div></div>
+  <div class="mc"><div class="lb">Other agents' beliefs</div><div class="vl">"Agent B believes the path is clear" — needed for coordination</div></div>
+  <div class="mc"><div class="lb">Possibility vs necessity</div><div class="vl">"The exit might be north" vs "the exit must be north"</div></div>
+</div>
+
+<p>Classical logic cannot express any of these distinctions. Modal and epistemic logic can.</p>
+
+<h3>The relationship between modal logic and epistemic logic</h3>
+
+<p>These two terms appear throughout this tutorial, often without a clear statement of how they relate. Here it is, before anything else:</p>
+
+<div class="g2">
+  <div class="card">
+    <h4>Modal logic — the general framework</h4>
+    <p style="font-size:13px">Modal logic extends classical propositional logic with two operators — □ (necessarily) and ♢ (possibly) — and a semantics based on possible worlds. It is a general-purpose framework that can be applied to many different domains depending on how you interpret "accessible world."</p>
+    <p style="font-size:13px;margin:0">Examples of modal logic applied to different domains:</p>
+    <ul style="font-size:13px;margin:.3rem 0 0;padding-left:1.2rem">
+      <li><strong>Temporal logic</strong> — □ means "always in the future," ♢ means "sometime in the future"</li>
+      <li><strong>Deontic logic</strong> — □ means "it is obligatory that," ♢ means "it is permitted that"</li>
+      <li><strong>Dynamic logic</strong> — □ means "after every execution of a program," ♢ means "after some execution"</li>
+      <li><strong>Epistemic logic</strong> — □ means "the agent knows/believes," ♢ means "the agent considers possible"</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Epistemic logic — one application of modal logic</h4>
+    <p style="font-size:13px">Epistemic logic is modal logic with a specific intended interpretation: the □ operator represents knowledge or belief, and the accessibility relation R encodes which worlds an agent considers possible given its current information.</p>
+    <p style="font-size:13px">It was developed by Jaakko Hintikka in 1962 specifically to reason formally about what agents know and believe — which is exactly what we need for the Belief-Desire-Intention (BDI) framework.</p>
+    <p style="font-size:13px;margin:0">Epistemic logic inherits all the machinery of modal logic — possible worlds, accessibility relations, axioms — and adds the specific interpretation that makes □ mean "knows" or "believes," and ♢ mean "the agent considers it possible that."
+    <ul style="font-size:13px;margin:.4rem 0 0;padding-left:1.2rem">
+      <li><strong>□φ</strong> — "the agent knows φ" or "the agent believes φ": φ holds in every world the agent considers possible</li>
+      <li><strong>♢φ</strong> — "the agent considers φ possible": φ holds in at least one world the agent considers possible</li>
+    </ul>
+    <p style="font-size:13px;margin:.4rem 0 0">Since □ and ♢ are duals (♢φ ⟺ ¬□¬φ), "the agent considers φ possible" is equivalent to "the agent does not know/believe that φ is false."</p></p>
+  </div>
+</div>
+
+<div class="ai"><p>The analogy: modal logic is the engine. Epistemic logic is one vehicle built on that engine. Temporal logic, deontic logic, and dynamic logic are other vehicles built on the same engine. You need to understand the engine — possible worlds, □, ♢, accessibility relations, axioms — before the vehicle makes sense. That is why this tutorial covers modal logic first (Sections 2–4) and epistemic logic second (Section 5).</p></div>
+
+<div class="blue-card"><p><strong>Goal of this tutorial:</strong> build the formal machinery from scratch, with every term defined before it is used, so that you can read and write modal logic proofs about belief, knowledge, and rational agency in BDI systems.</p></div>
+</div>
+
+
+<!-- ===================================================== SECTION 1 -->
+<div id="s-prop" class="sec">
+<span class="tag tc">foundations</span>
+<h2>Section 1 — propositional logic recap</h2>
+
+<p>Modal logic is built on top of classical propositional logic. This section establishes the foundation. Even if you know this material, pay attention to the ⊢ vs ⊨ distinction at the end — it is commonly confused and important for modal logic proofs.</p>
+
+<h3>Propositions</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — proposition</div>
+  <p>A <strong>proposition</strong> is any declarative statement that is either true or false, but not both. We use lowercase letters p, q, r or Greek letters φ (phi), ψ (psi) as placeholder names for propositions.</p>
+</div>
+
+<div class="g2">
+  <div class="mc"><div class="lb">Is a proposition</div><div class="vl">"It is raining" — definitively true or false at any given moment</div></div>
+  <div class="mc"><div class="lb">Is not a proposition</div><div class="vl">"Is it raining?" — a question has no truth value</div></div>
+</div>
+
+<h3>Logical connectives</h3>
+<p>Connectives combine propositions to form new propositions:</p>
+<table>
+  <tr><th>Symbol</th><th>Name</th><th>Meaning</th><th>Example (p = "raining", q = "windy")</th></tr>
+  <tr><td class="fm-cell">¬p</td><td>Negation</td><td>not p</td><td>"it is not raining"</td></tr>
+  <tr><td class="fm-cell">p ∧ q</td><td>Conjunction</td><td>p and q — both must be true</td><td>"it is raining and windy"</td></tr>
+  <tr><td class="fm-cell">p ∨ q</td><td>Disjunction</td><td>p or q — at least one must be true</td><td>"it is raining or windy (or both)"</td></tr>
+  <tr><td class="fm-cell">p ⟹ q</td><td>Implication</td><td>if p then q</td><td>"if it is raining then carry an umbrella"</td></tr>
+  <tr><td class="fm-cell">p ⟺ q</td><td>Biconditional</td><td>p if and only if q</td><td>"it is raining if and only if the ground is wet"</td></tr>
+</table>
+
+<h3>The material conditional ⟹ and its truth table</h3>
+
+<p>The implication p ⟹ q (read "if p then q") is defined by this truth table, where p and q are specific propositions with known truth values:</p>
+
+<div class="fm">Let p = "it is raining"
+Let q = "the ground is wet"
+
+p      q      p ⟹ q
+─────────────────────────────────────────────────────
+T      T        T    raining and ground wet: consistent with the rule ✓
+T      F        F    raining but ground not wet: the rule is violated ✗
+F      T        T    not raining but ground wet: rule not triggered, ground wet for other reasons
+F      F        T    not raining and ground not wet: rule not triggered</div>
+
+<p>The only case where p ⟹ q is false is when p is true and q is false — the condition holds but the consequence fails.</p>
+
+<div class="warn-card">
+  <p style="margin-bottom:.5rem"><strong>An important note — why implication is defined as ¬p ∨ q:</strong> The material conditional p ⟹ q is not taken as a primitive in classical logic. Instead it is <em>defined</em> as ¬p ∨ q — "not-p or q." These two expressions have identical truth tables:</p>
+  <div style="font-family:'Courier New',monospace;font-size:12px;margin:.5rem 0 .5rem .5rem;line-height:1.9;color:#78350f">
+    p &nbsp;&nbsp; q &nbsp;&nbsp; ¬p ∨ q &nbsp;&nbsp; p ⟹ q<br>
+    T &nbsp;&nbsp; T &nbsp;&nbsp;&nbsp; T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T<br>
+    T &nbsp;&nbsp; F &nbsp;&nbsp;&nbsp; F &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F<br>
+    F &nbsp;&nbsp; T &nbsp;&nbsp;&nbsp; T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T<br>
+    F &nbsp;&nbsp; F &nbsp;&nbsp;&nbsp; T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T
+  </div>
+  <p style="margin-bottom:0">Every row matches, so they are logically equivalent. The reason for defining implication this way is economy: ¬ and ∨ are more primitive operations, and by defining ⟹ in terms of them, the whole system needs fewer primitives. The cost is the vacuously true cases: when p is False, ¬p is True, so ¬p ∨ q is True regardless of q — with no meaningful connection between p and q required. Many philosophers and logicians find this unsatisfying, and alternative logics handle it differently. In classical propositional logic, accept it as a definition.</p>
+</div>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.4rem">Aside — strict implication and the motivation for modal logic</p>
+  <p style="font-size:13px;margin-bottom:.5rem">The vacuous truth problem motivated C.I. Lewis in 1918 to propose <strong>strict implication</strong> as a better account of what we actually mean when we say "p implies q" in reasoning and argumentation.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Strict implication is written □(p ⟹ q) and means: <em>in every accessible world, p ⟹ q holds.</em> This uses the possible worlds semantics defined formally in Section 2: at world w, □(p ⟹ q) is true if and only if for every world w₁ such that wRw₁ (w₁ is accessible from w), the material conditional p ⟹ q is true in w₁.</p>
+  <p style="font-size:13px;margin-bottom:.4rem">This is substantially stronger than plain p ⟹ q. Here is why, using the same example throughout:</p>
+  <p style="font-size:13px;margin-bottom:.3rem">Let p = "it is raining" and q = "the ground is wet."</p>
+  <p style="font-size:13px;margin-bottom:.3rem"><strong>Plain p ⟹ q</strong> (material conditional, current world only): true today simply if it happens not to be raining — vacuously, with no required connection between rain and wet ground.</p>
+  <p style="font-size:13px;margin-bottom:.5rem"><strong>□(p ⟹ q)</strong> (strict implication, all accessible worlds): true only if in every world I consider possible, whenever it rains the ground is wet. This rules out any accessible world where it rains but the ground stays dry — even if the current world happens to be dry. There is no escape through a false antecedent in a world where the antecedent holds.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Strict implication expresses a law-like necessary connection rather than a coincidental truth, and it is one of the principal historical motivations for developing modal logic. The □ operator gives us a way to say not just that something is true, but that it holds necessarily — across all situations we consider possible. This distinction between what happens to be true and what must be true runs through everything in Sections 2–7 of this tutorial.</p>
+  <p style="font-size:13px;margin:0">Note: strict implication has its own problems (the "paradoxes of strict implication"), which is why relevance logic and intuitionistic logic were developed as further alternatives. But for the purposes of this tutorial, strict implication is the key stepping stone from classical logic into modal logic.</p>
+</div>
+
+<h3>Inference rules</h3>
+<p>Given true premises, inference rules produce new true conclusions. The two most important:</p>
+
+<div class="g2">
+  <div class="card">
+    <h4>Modus Ponens</h4>
+    <div class="fm">Premise 1:  p ⟹ q
+Premise 2:  p
+─────────────────
+Conclusion: q</div>
+    <p style="font-size:12px;margin-top:.5rem;margin-bottom:0">Example: "If it rains, carry an umbrella" + "It is raining" → "Carry an umbrella."</p>
+  </div>
+  <div class="card">
+    <h4>Modus Tollens</h4>
+    <div class="fm">Premise 1:  p ⟹ q
+Premise 2:  ¬q
+─────────────────
+Conclusion: ¬p</div>
+    <p style="font-size:12px;margin-top:.5rem;margin-bottom:0">Example: "If it rains, ground is wet" + "Ground is not wet" → "It is not raining."</p>
+  </div>
+</div>
+
+<h3>Two kinds of entailment: ⊢ and ⊨</h3>
+
+<p>These symbols look similar but mean different things. Confusing them is one of the most common errors in logic proofs.</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — Γ (capital gamma)</div>
+  <p>Γ is a <strong>set of propositions</strong> — a collection of statements treated as premises or assumptions. For example, Γ = {p, p⟹q, q⟹r} is a set of three propositions. Saying "all of Γ is true" means every proposition in the set is true simultaneously in the same situation.</p>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <h4>Γ ⊢ φ — syntactic entailment</h4>
+    <p style="font-size:13px">φ can be <em>derived</em> from Γ by applying inference rules. A formal proof exists. This is purely about symbol manipulation — no interpretation required.</p>
+    <p style="font-size:13px;margin:0">Read as: "φ is provable from Γ."</p>
+  </div>
+  <div class="card">
+    <h4>Γ ⊨ φ — semantic entailment</h4>
+    <p style="font-size:13px">φ is <em>true</em> in every assignment of truth values to propositions that makes all of Γ true. This is about meaning and truth, not symbol manipulation.</p>
+    <p style="font-size:13px;margin:0">Read as: "φ is true in every assignment of truth values to propositions that makes all of Γ true" or "Γ logically implies φ."</p>
+  </div>
+</div>
+
+<p>A logical system is <strong>sound</strong> if Γ ⊢ φ guarantees Γ ⊨ φ — every provable statement is true. It is <strong>complete</strong> if Γ ⊨ φ guarantees Γ ⊢ φ — every true statement is provable. Classical propositional logic is both sound and complete.</p>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.4rem">Aside — Gödel's incompleteness theorems</p>
+  <p style="font-size:13px;margin-bottom:.5rem">We just said classical propositional logic is both sound and complete. This is a genuine theorem — but it only holds because propositional logic is a relatively weak system. For stronger systems, completeness breaks down in a fundamental way.</p>
+  <p style="font-size:13px;margin-bottom:.5rem"><strong>Gödel's First Incompleteness Theorem (1931):</strong> Any formal system that is (a) consistent — it cannot prove both φ and ¬φ — and (b) expressive enough to encode basic arithmetic, contains statements that are true but cannot be proved within that system.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">In other words: for sufficiently powerful systems, Γ ⊨ φ does not guarantee Γ ⊢ φ. There exist true statements that no proof can reach.</p>
+  <p style="font-size:13px;margin-bottom:.5rem"><strong>Why propositional logic escapes this:</strong> Gödel's theorem requires the system to be expressive enough to talk about arithmetic — natural numbers, addition, multiplication. Propositional logic has no quantifiers and no variables ranging over numbers, so it cannot encode arithmetic at all. It is too weak to be caught by incompleteness. First-order predicate logic over arithmetic is where the theorem bites.</p>
+  <p style="font-size:13px;margin-bottom:.5rem"><strong>Gödel's Completeness Theorem (1929):</strong> One year before the incompleteness theorem, Gödel proved that first-order predicate logic itself — without arithmetic — is complete: every semantically valid formula is provable. The incompleteness appears when you add the axioms of arithmetic on top.</p>
+  <p style="font-size:13px;margin:0"><strong>Connection to Section 6:</strong> Gödel's theorem gives a second, deeper reason why logical omniscience is unrealistic. Standard epistemic logic assumes agents know all consequences of their beliefs. But if an agent's beliefs include arithmetic, Gödel guarantees there are true consequences that are unprovable — no finite derivation can reach them. Konolige's bounded deduction model (Section 6) sidesteps both problems at once: by restricting to a finite rule set r, the agent is neither expected to know all consequences nor capable of deriving unprovable truths.</p>
+</div>
+
+<div class="qb">
+  <div class="qq">Given Γ = {"if the sensor fires then there is an obstacle" (p ⟹ q), "the sensor fired" (p)}. What can we conclude using Modus Ponens?</div>
+  <button class="qo" data-c="0" onclick="ans(this,false)">¬q — there is no obstacle</button>
+  <button class="qo" data-c="1" onclick="ans(this,true)">q — there is an obstacle</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">Nothing — we need more information</button>
+  <div class="fb">Modus Ponens: from (p ⟹ q) and p, we derive q. The sensor fired (p is true), and we know firing implies obstacle (p ⟹ q), so there is an obstacle (q is true). Both Γ ⊢ q (we can prove it by applying Modus Ponens) and Γ ⊨ q (it is true in every situation where both premises hold).</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 2 -->
+<div id="s-worlds" class="sec">
+<span class="tag tf">semantics</span>
+<h2>Section 2 — possible worlds semantics</h2>
+
+<p>Before introducing the modal operators □ and ♢, we need a precise account of what they mean — a <strong>semantics</strong>. The standard semantics, developed by Saul Kripke in 1963, is called <strong>possible worlds semantics</strong>. All modal logic terminology is defined here, before it is used anywhere else in this tutorial.</p>
+
+<h3>What is a possible world?</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — possible world</div>
+  <p>A <strong>possible world</strong> is a complete, consistent assignment of truth values to every proposition in the vocabulary under consideration — the fixed set of propositions relevant to the problem at hand. It describes one complete way things could be within that vocabulary. We use lowercase letters w, w₁, w₂, w' to name individual worlds. The <strong>actual world</strong> is the world that corresponds to reality as it currently is.</p>
+</div>
+
+<div class="ai"><p>Think of a possible world as a row in a giant truth table — one that assigns True or False to every proposition simultaneously. The actual world is the row that matches reality right now. Other rows are other ways things could have been, or could be.</p></div>
+
+<h3>The three components of a Kripke model</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — Kripke model</div>
+  <p>A <strong>Kripke model</strong> M is a triple M = (W, R, V) consisting of three components defined below.</p>
+</div>
+
+<div class="step"><div class="dot dd">W</div><div class="sb">
+<div class="st">W — the set of possible worlds</div>
+<div class="sd">W is a non-empty set. Each element of W is one possible world. Think of W as the nodes of a directed graph — one node per world.</div>
+</div></div>
+
+<div class="step"><div class="dot dd">R</div><div class="sb">
+<div class="st">R — the accessibility relation</div>
+<div class="sd">R is a set of ordered pairs of worlds: R ⊆ W × W. If the pair (w, w₁) is in R, written <strong>wRw₁</strong>, we say "world w₁ is accessible from world w." Think of R as the directed edges of the graph — an arrow from w to w₁ means w₁ is accessible from w. Intuitively: an agent in world w considers world w₁ a possible situation given what it knows.</div>
+</div></div>
+
+<div class="step"><div class="dot dd">V</div><div class="sb">
+<div class="st">V — the valuation function</div>
+<div class="sd">V assigns a truth value to every proposition in every world. For each proposition p and each world w, V(w, p) = True or False. Different worlds can assign different truth values to the same proposition — that is precisely what makes them different worlds.</div>
+</div></div>
+
+<h3>A concrete example</h3>
+
+<p>Let p = "it is raining" and q = "Alice is carrying an umbrella."</p>
+<p>In the actual world w₀: it is raining (p = True) and Alice is not carrying an umbrella (q = False). Alice is indoors and cannot see outside, so she does not know whether it is raining. Because she lacks this information, she considers two worlds possible from w₀ — one in which it is raining and one in which it is not:</p>
+
+<div class="world-diagram">
+  <div class="world actual">
+    <div class="wlabel">w₀ — actual world</div>
+    <div>p (raining): <strong>TRUE</strong></div>
+    <div>q (umbrella): FALSE</div>
+    <div style="font-size:11px;color:#1d4ed8;margin-top:.4rem">Alice is here</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="world accessible">
+    <div class="wlabel">w₁ — accessible from w₀</div>
+    <div>p (raining): <strong>TRUE</strong></div>
+    <div>q (umbrella): FALSE</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="world accessible">
+    <div class="wlabel">w₂ — accessible from w₀</div>
+    <div>p (raining): <strong>FALSE</strong></div>
+    <div>q (umbrella): FALSE</div>
+  </div>
+</div>
+
+<p>The arrows represent the accessibility relation R. Here w₀Rw₁ and w₀Rw₂ — Alice considers both w₁ and w₂ possible from her current position in w₀.</p>
+
+<h3>Truth conditions for modal formulas</h3>
+
+<p>We write <strong>M, w ⊨ φ</strong> to mean "formula φ is true in model M at world w." For classical connectives, truth is evaluated within each world exactly as in propositional logic. For modal operators:</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — truth of □φ at world w</div>
+  <p><strong>M, w ⊨ □φ</strong> if and only if for every world w₁ such that wRw₁, M, w₁ ⊨ φ.<br>
+  That is: φ is true in <em>every</em> world accessible from w.</p>
+</div>
+
+<div class="defn">
+  <div class="defn-term">Definition — truth of ♢φ at world w</div>
+  <p><strong>M, w ⊨ ♢φ</strong> if and only if there exists a world w₁ such that wRw₁ and M, w₁ ⊨ φ.<br>
+  That is: φ is true in <em>at least one</em> world accessible from w.</p>
+</div>
+
+<p>Applying these definitions to the Alice example. Notice the important distinction: the actual world w₀ tells us what is really true (it is raining, no umbrella), while the accessible worlds w₁ and w₂ represent what Alice considers possible given her limited information. Modal operators □ and ♢ range over the accessible worlds, not the actual world directly.</p>
+<div class="fm">Actual world w₀: p = TRUE (raining), q = FALSE (no umbrella). Alice is here.
+Accessible worlds from w₀: w₁ and w₂ (both considered possible by Alice).
+
+M, w₀ ⊨ □p ?    Is p true in ALL worlds accessible from w₀?
+                w₁: p = TRUE  ✓
+                w₂: p = FALSE ✗  — fails in w₂
+                Therefore: M, w₀ ⊨ □p is FALSE.
+                Alice does not necessarily believe it is raining —
+                even though it actually is raining in w₀.
+                Her belief does not track the actual world because
+                she considers w₂ (not raining) equally possible.
+
+M, w₀ ⊨ ♢p ?    Is p true in AT LEAST ONE world accessible from w₀?
+                w₁: p = TRUE  ✓  — one witness is enough
+                Therefore: M, w₀ ⊨ ♢p is TRUE.
+                Alice considers it possible that it is raining.
+
+M, w₀ ⊨ □(¬q) ? Is ¬q true in ALL worlds accessible from w₀?
+                w₁: q = FALSE, so ¬q = TRUE  ✓
+                w₂: q = FALSE, so ¬q = TRUE  ✓
+                Therefore: M, w₀ ⊨ □(¬q) is TRUE.
+                In every world Alice considers possible, she has no umbrella.
+                This matches the actual world too — but that is coincidental.
+                □(¬q) is true because of the accessible worlds, not because of w₀ directly.</div>
+
+<h3>Validity</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — validity</div>
+  <p>A formula φ is <strong>valid</strong>, written ⊨ φ, if it is true at every world in every possible Kripke model. A valid formula is a tautology of modal logic — it holds no matter what. This is a much stronger claim than being true at one particular world in one particular model.</p>
+</div>
+
+<div class="qb">
+  <div class="qq">In the Alice example, what is the truth value of ♢(¬p) at world w₀? Here ¬p means "it is not raining."</div>
+  <button class="qo" data-c="1" onclick="ans(this,true)">TRUE — because w₂ is accessible from w₀ and p = FALSE in w₂, so ¬p = TRUE in w₂</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">FALSE — because p = TRUE in the actual world w₀, so ¬p = FALSE</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">FALSE — because ¬p is not true in w₁</button>
+  <div class="fb">TRUE. ♢(¬p) requires ¬p to be true in at least one accessible world. World w₂ is accessible from w₀ (w₀Rw₂) and has p = FALSE, making ¬p = TRUE in w₂. That single witness is sufficient for ♢. Note: the truth value of p in the actual world w₀ is irrelevant — we are asking about accessible worlds, not the actual world itself.</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 3 -->
+<div id="s-modal" class="sec">
+<span class="tag tf">modal logic</span>
+<h2>Section 3 — modal logic</h2>
+
+<p>Now that possible worlds and the accessibility relation R are defined, we can give the modal operators □ and ♢ their full formal treatment. Their semantics were defined in Section 2. This section covers their syntax, their relationship to each other, and how they compose.</p>
+
+<h3>The two modal operators — formal definitions</h3>
+
+<div class="g2">
+  <div class="card">
+    <div style="font-size:28px;text-align:center;margin-bottom:.4rem">□</div>
+    <h4 style="text-align:center;margin:.2rem 0">Box — Necessity</h4>
+    <p style="font-size:13px"><strong>□φ</strong> is true at world w if φ is true in every world w₁ such that wRw₁ — every world accessible from w.</p>
+    <p style="font-size:13px;margin:0">Read as: "necessarily φ" or "in all accessible worlds, φ."</p>
+  </div>
+  <div class="card">
+    <div style="font-size:28px;text-align:center;margin-bottom:.4rem">♢</div>
+    <h4 style="text-align:center;margin:.2rem 0">Diamond — Possibility</h4>
+    <p style="font-size:13px"><strong>♢φ</strong> is true at world w if there exists at least one world w₁ such that wRw₁ and φ is true in w₁.</p>
+    <p style="font-size:13px;margin:0">Read as: "possibly φ" or "in some accessible world, φ."</p>
+  </div>
+</div>
+
+<h3>The duality of □ and ♢</h3>
+<p>□ and ♢ are defined in terms of each other, just as ∀ (for all) and ∃ (there exists) are duals in predicate logic:</p>
+<div class="fm">□φ  ⟺  ¬♢¬φ     "necessarily φ"  is the same as  "not possibly not-φ"
+♢φ  ⟺  ¬□¬φ     "possibly φ"     is the same as  "not necessarily not-φ"</div>
+
+<div class="ai"><p>The analogy with quantifiers: □ behaves like ∀ (quantifying over all accessible worlds) and ♢ behaves like ∃ (quantifying over at least one accessible world). Just as ∀x P(x) ⟺ ¬∃x ¬P(x), we have □φ ⟺ ¬♢¬φ.</p></div>
+
+<h3>Examples — applying □ and ♢ to propositions</h3>
+
+<p>Let p = "the door is locked" and q = "the key is needed."</p>
+
+<div class="fm">p             "the door is locked"
+¬p            "the door is not locked"
+□p            "the door is necessarily locked" — locked in every accessible world
+♢p            "the door is possibly locked" — locked in at least one accessible world
+¬□p           "it is not necessarily the case that the door is locked"
+□¬p           "it is necessarily the case that the door is not locked"
+□(p ⟹ q)     "necessarily, if the door is locked then the key is needed"
+♢(p ∧ ¬q)    "it is possible that the door is locked and the key is not needed"</div>
+
+<h3>Iterated modalities — □□φ and □♢φ</h3>
+
+<p>Modal operators can be nested. To understand what □□φ means, we need to trace through two steps of the accessibility relation.</p>
+
+<p>Recall: wRw₁ means "world w₁ is accessible from world w" — there is a directed arrow from w to w₁ in the graph.</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — □□φ</div>
+  <p><strong>□□φ</strong> is true at world w if and only if: for every world w₁ such that wRw₁, and for every world w₂ such that w₁Rw₂, φ is true in w₂.</p>
+  <p style="margin-top:.4rem">In graph terms: φ holds at every world reachable from w via any intermediate world w₁ along arrows of R.</p>
+</div>
+
+<div class="world-diagram">
+  <div class="world actual">
+    <div class="wlabel">w — start</div>
+    <div style="font-size:12px">□□φ evaluated here</div>
+  </div>
+  <div class="arrow">→<br><small style="font-size:10px">wRw₁</small></div>
+  <div class="world accessible">
+    <div class="wlabel">w₁ — one step</div>
+    <div style="font-size:12px">□φ must hold here</div>
+  </div>
+  <div class="arrow">→<br><small style="font-size:10px">w₁Rw₂</small></div>
+  <div class="world accessible">
+    <div class="wlabel">w₂ — two steps</div>
+    <div style="font-size:12px">φ must hold here</div>
+  </div>
+</div>
+
+<h4>Transitivity of R — and why it matters for □□φ</h4>
+
+<p>To understand why □□φ is a non-trivial claim, we need to understand what it means for R to be transitive — and what happens when it is not.</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — transitive relation</div>
+  <p>The accessibility relation R is <strong>transitive</strong> if whenever (w, w₁) ∈ R and (w₁, w₂) ∈ R, it follows that (w, w₂) ∈ R.<br>
+  In graph terms: if there is an arrow from w to w₁ and an arrow from w₁ to w₂, then there is also a direct arrow from w to w₂.<br>
+  Transitivity says: <em>anything reachable in two steps is also reachable in one step directly.</em></p>
+</div>
+
+<p>If R is <strong>not</strong> transitive, there can exist worlds w, w₁, w₂ such that (w, w₁) ∈ R and (w₁, w₂) ∈ R but (w, w₂) ∉ R — w₂ is reachable from w by going through w₁, but there is no direct arrow from w to w₂.</p>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.5rem">Example — non-transitivity with Alice, Bob, and Carol</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Imagine three people: Alice, Bob, and Carol. Alice can see Bob's computer screen. Bob can see Carol's computer screen. Alice cannot see Carol's screen directly.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Model this as three worlds representing what each person knows:</p>
+  <ul style="font-size:13px;margin-bottom:.5rem;padding-left:1.2rem">
+    <li>w = Alice's world — what Alice knows</li>
+    <li>w₁ = Bob's world — what Bob knows (accessible from w: Alice can see Bob's screen, so Alice considers Bob's world possible)</li>
+    <li>w₂ = Carol's world — what Carol knows (accessible from w₁: Bob can see Carol's screen, so Bob considers Carol's world possible)</li>
+  </ul>
+  <p style="font-size:13px;margin-bottom:.5rem">The accessibility relation R contains: (w, w₁) and (w₁, w₂). But it does <strong>not</strong> contain (w, w₂) — Alice has no direct view of Carol's screen, so Alice does not consider Carol's world directly accessible.</p>
+  <p style="font-size:13px;margin-bottom:.75rem">R is not transitive in this model.</p>
+  <p style="font-size:13px;margin-bottom:.3rem">Now consider what □φ and □□φ mean at w:</p>
+  <p style="font-size:13px;margin-bottom:.3rem"><strong>□φ at w:</strong> φ holds in every world directly accessible from w. The only directly accessible world is w₁ (Bob's world). So □φ says: φ is true in Bob's world. It says nothing about Carol's world w₂, because (w, w₂) ∉ R.</p>
+  <p style="font-size:13px;margin-bottom:.3rem"><strong>□□φ at w:</strong> in every world directly accessible from w (that is, w₁), φ holds in every world directly accessible from w₁ (that is, w₂). So □□φ requires φ to be true in Carol's world w₂.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">In this non-transitive model, □φ and □□φ are genuinely different claims. □φ covers worlds one arrow away (w₁ only). □□φ covers worlds two arrows away (w₂ via w₁). Alice knowing something (□φ) does not imply Alice knowing that Bob knows it (□□φ), because Alice cannot see what Bob sees about Carol.</p>
+  <p style="font-size:13px;margin:0"><strong>If R were transitive:</strong> the direct arrow (w, w₂) would exist. Then w₂ would already be in the set of worlds directly accessible from w, and □φ would already require φ to hold in w₂. The two-step and one-step accessible worlds would coincide, and □□φ would add nothing beyond □φ — they would be equivalent.</p>
+</div>
+
+<p>Axiom 4 (□φ ⟹ □□φ) is precisely the axiom that forces R to be transitive. By adopting Axiom 4, you are asserting: there are no two-step paths that are not also one-step paths. Every w₂ reachable in two steps is also reachable in one step directly. In agent terms: if an agent believes φ (in all worlds it can reach), then it also believes that it believes φ (φ holds in all worlds reachable from those worlds) — because transitivity collapses the two levels into one.</p>
+
+<div class="fm">□φ    φ holds in every world w₁ such that wRw₁        (one step from w)
+□□φ   φ holds in every world w₂ such that w₁Rw₂,      (two steps from w,
+      for every w₁ such that wRw₁                       via any intermediate w₁)</div>
+
+<div class="qb">
+  <div class="qq">Which formula expresses "it is not possible that the agent fails to act"? Let f = "the agent fails to act."</div>
+  <button class="qo" data-c="0" onclick="ans(this,false)">♢f</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">□f</button>
+  <button class="qo" data-c="1" onclick="ans(this,true)">¬♢f — which by duality equals □¬f</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">♢¬f</button>
+  <div class="fb">¬♢f = "it is not possible that the agent fails to act." By the duality rule ¬♢φ ⟺ □¬φ, this equals □¬f = "necessarily, the agent does not fail to act" — i.e., the agent necessarily acts. Duality is a key tool in modal logic proofs: you can always rewrite □ in terms of ♢ and vice versa.</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 4 -->
+<div id="s-axioms" class="sec">
+<span class="tag tf">axioms</span>
+<h2>Section 4 — axioms and their meaning</h2>
+
+<p>The semantic meaning of □ and ♢ depends on the structure of the accessibility relation R. Different constraints on R give different valid formulas — these formulas are the <strong>axioms</strong> of the modal system. Adding axioms restricts which Kripke models are allowed.</p>
+
+<h3>The base system K</h3>
+<p>Every modal logic includes at minimum two rules:</p>
+<div class="fm">Distribution axiom K:    □(p ⟹ q)  ⟹  (□p ⟹ □q)
+  If necessarily (p implies q), and necessarily p, then necessarily q.
+  This is just the modal version of Modus Ponens — it distributes □ over implication.
+
+Necessitation rule:      if ⊨ φ  then  ⊨ □φ
+  If φ is valid (a logical tautology — true in every world in every model),
+  then □φ is also valid (φ holds in all accessible worlds everywhere).</div>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.5rem">What the necessitation rule does and does not allow</p>
+  <p style="font-size:13px;margin-bottom:.5rem">The necessitation rule applies <strong>only to logical tautologies</strong> — formulas that are true in every world in every possible model, regardless of how propositions are interpreted. It does <strong>not</strong> apply to propositions that merely happen to be true in the current world.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">A <strong>logical tautology</strong> is a formula whose truth depends only on its logical structure, not on what the propositions mean. Examples:</p>
+  <ul style="font-size:13px;margin-bottom:.5rem;padding-left:1.2rem">
+    <li>p ∨ ¬p — "either p or not-p" — true in every world no matter what p means</li>
+    <li>p ⟹ p — "p implies p" — always true</li>
+    <li>(p ∧ q) ⟹ p — "if p and q then p" — always true</li>
+  </ul>
+  <p style="font-size:13px;margin-bottom:.5rem">The necessitation rule allows us to conclude □(p ∨ ¬p) — "necessarily, either p or not-p." This is valid because p ∨ ¬p holds in every world in every model.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Now contrast this with a <strong>contingent truth</strong> — a proposition that happens to be true in the current world but is not guaranteed to be true in every world. Let p = "it is raining." Suppose it is raining right now, so p is true in the current world w. The necessitation rule does <strong>not</strong> allow us to conclude □p — "necessarily, it is raining." That would be absurd: it might not be raining in other accessible worlds, and probably is not raining in all of them.</p>
+  <p style="font-size:13px;margin:0">The distinction in a single sentence: the necessitation rule licenses moving from <em>logical necessity</em> (true in every world in every model) to □, but not from <em>contingent truth</em> (true in this world right now) to □. Conflating these two is one of the most common errors when first working with modal logic.</p>
+</div>
+
+<p>These two rules alone define system K. They are necessary but not sufficient for reasoning about agent beliefs. We add further axioms for that.</p>
+
+<h3>The four main additional axioms</h3>
+
+<table>
+  <tr><th>Name</th><th>Formula</th><th>Plain English</th><th>Constraint on R</th></tr>
+  <tr>
+    <td><strong>T</strong><br>Truth axiom</td>
+    <td class="fm-cell">□φ ⟹ φ</td>
+    <td>If φ is true in all accessible worlds, then φ is true in the current world.</td>
+    <td>R must be <strong>reflexive</strong>: for every world w, wRw. Every world is accessible from itself.</td>
+  </tr>
+  <tr>
+    <td><strong>4</strong><br>Positive introspection</td>
+    <td class="fm-cell">□φ ⟹ □□φ</td>
+    <td>If φ holds in all worlds accessible from w, then φ also holds in all worlds accessible from those worlds.</td>
+    <td>R must be <strong>transitive</strong>: if wRw₁ and w₁Rw₂ then wRw₂. Two-step paths are also one-step paths.</td>
+  </tr>
+  <tr>
+    <td><strong>5</strong><br>Negative introspection</td>
+    <td class="fm-cell">¬□φ ⟹ □¬□φ</td>
+    <td>
+      <p style="font-size:13px;margin:0 0 .4rem">¬□φ means: there exists at least one accessible world w₁ in which φ is false.</p>
+      <p style="font-size:13px;margin:0 0 .4rem">□¬□φ means: in every accessible world w₁, there exists at least one world accessible from w₁ in which φ is false.</p>
+      <p style="font-size:13px;margin:0">The axiom says: if the agent does not believe φ, then in every world the agent considers possible, that non-belief persists. In agent terms: the agent is aware of its own non-beliefs. This is called <strong>negative introspection</strong>.</p>
+    </td>
+    <td>R must be <strong>Euclidean</strong>: if wRw₁ and wRw₂ then w₁Rw₂.</td>
+  </tr>
+  <tr>
+    <td><strong>D</strong><br>Consistency</td>
+    <td class="fm-cell">□φ ⟹ ♢φ</td>
+    <td>If φ holds in all accessible worlds, then φ holds in at least one accessible world. Necessary things are possible.</td>
+    <td>
+      <p style="font-size:13px;margin:0 0 .4rem">R must have the following property: for every world w in W, there exists at least one world w₁ in W such that wRw₁ — every world has at least one accessible world. R never dead-ends.</p>
+      <p style="font-size:13px;margin:0">This property is called <strong>serial</strong> in the mathematical literature — the relation continues indefinitely, with no world from which all paths stop. The practical meaning for agents: the agent always has at least one world it considers possible. Without this, an agent could have no accessible worlds at all, making □φ vacuously true for every φ simultaneously — including contradictions — making the belief system inconsistent.</p>
+    </td>
+  </tr>
+</table>
+
+<h3>Understanding Axiom T — worked example</h3>
+
+<p>Axiom T states: □φ ⟹ φ. In semantic terms: if φ is true in every world accessible from w, then φ is true in w itself. This requires w to be accessible from itself — i.e., wRw.</p>
+
+<div class="world-diagram">
+  <div class="world actual">
+    <div class="wlabel">w — current world</div>
+    <div>φ: TRUE</div>
+    <div style="font-size:11px;color:#1d4ed8;margin-top:.3rem">wRw (self-loop) ← required by Axiom T</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="world accessible">
+    <div class="wlabel">w₁ — also accessible</div>
+    <div>φ: TRUE</div>
+    <div style="font-size:11px;color:#666;margin-top:.3rem">w₁Rw not required</div>
+  </div>
+</div>
+
+<p>Because wRw, world w is in its own set of accessible worlds. So "φ is true in all accessible worlds" includes "φ is true in w." Therefore □φ ⟹ φ holds. Without the self-loop, the current world might not be accessible from itself, and □φ could hold even if φ is false in w.</p>
+
+<h3>Understanding Axiom 4 — worked example</h3>
+
+<p>Axiom 4 states: □φ ⟹ □□φ.</p>
+
+<p>Recall from Section 3: □□φ at world w means φ holds in every world w₂ reachable from w in two steps — i.e., every w₂ such that there exists w₁ with wRw₁ and w₁Rw₂.</p>
+
+<p>Axiom 4 says: if φ holds in every world one step from w, then φ also holds in every world two steps from w. This is automatically true when R is transitive — because if wRw₁ and w₁Rw₂, transitivity gives wRw₂ directly, so w₂ is already among the one-step accessible worlds where φ holds.</p>
+
+<div class="world-diagram">
+  <div class="world actual"><div class="wlabel">w</div><div style="font-size:12px">□φ holds here</div></div>
+  <div class="arrow">→<br><small>wRw₁</small></div>
+  <div class="world accessible"><div class="wlabel">w₁</div><div style="font-size:12px">φ holds here</div></div>
+  <div class="arrow">→<br><small>w₁Rw₂</small></div>
+  <div class="world accessible"><div class="wlabel">w₂</div><div style="font-size:12px">φ must also hold (Axiom 4 guarantees this)</div></div>
+</div>
+
+<p>For agents: Axiom 4 means that if an agent believes φ (□φ), then the agent believes that it believes φ (□□φ). This is called <strong>positive introspection</strong> — the agent is aware of its own beliefs. It is essential for reasoning about the stability of intentions across accessible worlds, as we will see in Section 7.</p>
+
+<h3>Named modal logics — standard systems</h3>
+
+<p>Named modal logic systems follow a simple convention: the name lists the axioms added on top of the base system K. Each letter corresponds to one axiom:</p>
+
+<div class="fm">Naming convention:
+  K  = base system (Distribution axiom + Necessitation rule) — always present
+  T  = add Axiom T:  □φ ⟹ φ              (reflexive R)
+  D  = add Axiom D:  □φ ⟹ ♢φ             (serial R)
+  4  = add Axiom 4:  □φ ⟹ □□φ            (transitive R)
+  5  = add Axiom 5:  ¬□φ ⟹ □¬□φ          (Euclidean R)
+
+So KD45 = base system K, plus Axiom D, plus Axiom 4, plus Axiom 5.
+   KT45 = base system K, plus Axiom T, plus Axiom 4, plus Axiom 5.</div>
+
+<p>The standard systems used in this tutorial are:</p>
+
+<div class="fm">K      = base system (Distribution axiom + Necessitation rule only)
+KT     = K + Axiom T                        reflexive R
+KT4    = K + T + 4                         reflexive + transitive R    ← sometimes used for belief,
+                                                   but includes Axiom T so the actual world
+                                                   is always accessible (closer to knowledge)
+                                                   (called S4 in historical literature)
+KT45   = K + T + 4 + 5                     reflexive + transitive + Euclidean R  ← standard knowledge
+                                                   (called S5 in historical literature)
+KD45   = K + D + 4 + 5                     R has at least one accessible world from each world (serial),
+                                            plus transitive + Euclidean R     ← weaker belief (allows false beliefs)</div>
+
+<div class="qb">
+  <div class="qq">An agent system satisfies Axiom T. The agent necessarily believes (□) that "the exit is to the north" — meaning this holds in all accessible worlds. What can we conclude about the actual world?</div>
+  <button class="qo" data-c="0" onclick="ans(this,false)">Nothing — □ only tells us about accessible worlds, not the actual world</button>
+  <button class="qo" data-c="1" onclick="ans(this,true)">The exit is actually to the north — Axiom T says □φ ⟹ φ, so the actual world satisfies φ too</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">The agent believes that it believes the exit is north — that would be Axiom 4, not T</button>
+  <div class="fb">Axiom T: □φ ⟹ φ. Since □(exit_north) holds, exit_north is true in the actual world. This is what distinguishes knowledge (truth guaranteed by Axiom T) from mere belief in a system without T (you can believe false things). Axiom T requires wRw — the actual world is accessible from itself — so "true in all accessible worlds" includes "true in the actual world."</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 5 -->
+<div id="s-epistemic" class="sec">
+<span class="tag tp">epistemic logic</span>
+<h2>Section 5 — epistemic logic</h2>
+
+<p>As introduced in Section 0, epistemic logic is modal logic with a specific interpretation: the □ operator represents knowledge or belief, and the accessibility relation R encodes which worlds an agent considers possible given its information. It was developed by Jaakko Hintikka in 1962 and is the standard formal tool for reasoning about what agents know and believe. Everything from Sections 2–4 — possible worlds, the accessibility relation R, the operators □ and ♢, and the axioms — carries over directly. What changes is only the interpretation we give to those structures.</p>
+
+<h3>Two modal operators for two mental states</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — epistemic accessibility relation</div>
+  <p>The <strong>epistemic accessibility relation</strong> for agent i, written <strong>Rᵢᴷ</strong>, is the set of ordered pairs (w, w₁) such that agent i considers world w₁ possible from world w — given everything the agent <em>knows</em>. World w₁ is epistemically accessible from w for agent i if agent i cannot rule out w₁ based on its knowledge in w.</p>
+  <p>The epistemic accessibility relation satisfies Axiom T (it is reflexive: wRᵢᴷw for all w), which ensures that what the agent knows is actually true. It typically also satisfies Axioms 4 and 5, giving the full KT45 system for knowledge (also called S5 in the literature).</p>
+</div>
+
+<div class="defn">
+  <div class="defn-term">Definition — doxastic accessibility relation</div>
+  <p>The <strong>doxastic accessibility relation</strong> for agent i, written <strong>Rᵢᴮ</strong>, is the set of ordered pairs (w, w₁) such that agent i considers world w₁ possible from world w — given what the agent <em>believes</em>. World w₁ is doxastically accessible from w for agent i if world w₁ is consistent with the agent's beliefs in w.</p>
+  <p>The doxastic accessibility relation does <strong>not</strong> require Axiom T (it need not be reflexive). This means the actual world w need not be among the worlds the agent considers possible — the agent can hold false beliefs. It typically satisfies Axioms 4 and 5 but not T, giving the KD45 system for belief.</p>
+  <p>Both terms trace to ancient Greek, and the distinction between them maps precisely onto the formal distinction between knowledge and belief in epistemic logic:</p>
+  <ul style="font-size:13px;margin:.3rem 0 .5rem;padding-left:1.2rem">
+    <li><em>Episteme</em> (ἐπιστήμη) — knowledge: justified, certain, and true. Plato contrasted it with doxa in several dialogues, arguing that episteme is stable and reliable in a way that mere opinion is not. The words <em>epistemic</em> and <em>epistemology</em> (the branch of philosophy concerned with the nature and scope of knowledge) both derive from this root.</li>
+    <li><em>Doxa</em> (δόξα) — opinion or belief: may be true or false, and need not be justified. The words <em>doxastic</em> and <em>orthodox</em> (literally "correct opinion") derive from this root.</li>
+  </ul>
+  <p style="font-size:13px;margin:0">The formal properties of the two accessibility relations in epistemic logic directly reflect this ancient philosophical distinction: the epistemic relation satisfies Axiom T (what is known is true — episteme is factive), while the doxastic relation does not (what is believed may be false — doxa is not factive).</p>
+</div>
+
+<div class="defn">
+  <div class="defn-term">Definition — Kᵢφ (agent i knows φ)</div>
+  <p>Kᵢφ is true at world w if φ is true in every world w₁ such that wRᵢᴷw₁, where <strong>Rᵢᴷ</strong> is the <strong>epistemic</strong> accessibility relation for agent i — the worlds agent i cannot rule out given its knowledge.<br>
+  Because Rᵢᴷ satisfies Axiom T (reflexive), Kᵢφ ⟹ φ: what the agent knows is actually true in the current world.</p>
+</div>
+
+<div class="defn">
+  <div class="defn-term">Definition — Bᵢφ (agent i believes φ)</div>
+  <p>Bᵢφ is true at world w if φ is true in every world w₁ such that wRᵢᴮw₁, where <strong>Rᵢᴮ</strong> is the <strong>doxastic</strong> accessibility relation for agent i — the worlds consistent with the agent's beliefs.<br>
+  Because Rᵢᴮ does not require Axiom T (not necessarily reflexive), Bᵢφ does not imply φ: the agent can believe false things. The actual world w need not be among the worlds the agent considers possible.</p>
+</div>
+
+<h3>The crucial distinction — knowledge requires truth, belief does not</h3>
+
+<div class="fm">Knowledge:   Kᵢφ ⟹ φ          what you know must be true (Axiom T applies)
+Belief:      Bᵢφ does not imply φ   what you believe may be false (no Axiom T)</div>
+
+<div class="ai"><p>You believed it would be sunny today. It rained. Your belief was false — but it was still a genuine belief. If you had known it would be sunny, it would have been sunny. Knowledge is factive (truth-guaranteeing); belief is not.</p></div>
+
+<h3>Each agent has its own accessibility relation</h3>
+
+<p>In a multi-agent system with agents 1, 2, ..., n, each agent i has its own accessibility relation — Rᵢᴷ for knowledge or Rᵢᴮ for belief — on the set of worlds W. The relation encodes which worlds agent i considers possible from each world.</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — wRᵢᴷw₁ and wRᵢᴮw₁</div>
+  <p>The pair (w, w₁) is in agent i's epistemic accessibility relation Rᵢᴷ (or doxastic relation Rᵢᴮ). Read as: "from world w, agent i considers world w₁ possible given its knowledge (or beliefs)." In graph terms: there is a directed arrow labelled i from node w to node w₁. The superscript K or B indicates whether the relation encodes knowledge or belief.</p>
+</div>
+
+<p>Two agents in the same world can have completely different accessibility relations — they may consider different sets of worlds possible, because they have different information.</p>
+
+<h3>Nested epistemic statements</h3>
+
+<p>Epistemic logic handles nested knowledge and belief naturally. This is essential for multi-agent reasoning and for the BDI formalization in Section 7:</p>
+
+<div class="fm">Kᵢφ               agent i knows φ
+KᵢKⱼφ             agent i knows that agent j knows φ
+BᵢKⱼφ             agent i believes that agent j knows φ
+Kᵢ(φ ⟹ Bⱼψ)      agent i knows that if φ holds then agent j believes ψ
+Bᵢ(Bᵢφ)           agent i believes that agent i believes φ  (positive introspection: Axiom 4)</div>
+
+<h3>Standard epistemic systems</h3>
+<div class="fm">Knowledge system KT45  (also called S5 in the literature)
+  Rᵢᴷ is reflexive, transitive, and Euclidean
+  Kᵢφ ⟹ φ  (truth)
+  Kᵢφ ⟹ KᵢKᵢφ  (positive introspection)
+  ¬Kᵢφ ⟹ Kᵢ¬Kᵢφ  (negative introspection)
+
+Belief system KD45
+  Rᵢᴮ has at least one accessible world from each world (serial), transitive, and Euclidean — but NOT reflexive
+  Bᵢφ does not imply φ  (false beliefs allowed)
+  Bᵢφ ⟹ BᵢBᵢφ  (positive introspection still holds)
+  ¬Bᵢφ ⟹ Bᵢ¬Bᵢφ  (negative introspection still holds)</div>
+
+<h3>BDI notation — common variants mapped to standard epistemic logic</h3>
+<table>
+  <tr><th>Common notation</th><th>Standard notation</th><th>Meaning</th></tr>
+  <tr><td class="fm-cell">□Bₐ</td><td class="fm-cell">Bₐ(φ)</td><td>Agent a believes proposition B</td></tr>
+  <tr><td class="fm-cell">♢Dₐ</td><td class="fm-cell">Desₐ(D) with ♢Dₐ as feasibility constraint</td><td>Agent a desires D. Note: ♢Dₐ (D is achievable in at least one accessible world) is a necessary condition for rational desire, not a definition of it. Desire is a separate attitude — see Section 7.</td></tr>
+  <tr><td class="fm-cell">□Iₐ</td><td class="fm-cell">Intₐ(I)</td><td>Agent a is <strong>committed</strong> to intention I. <em>□Iₐ</em> is the semantic rendering: Iₐ holds in every world a considers possible. <em>Intₐ(I)</em> is the full BDI operator, which interprets as □Iₐ plus the rationality constraint Intₐ(I) ⟹ Desₐ(I) ∧ ¬Bₐ(¬I). The □ gives the possible-worlds truth conditions; the consistency condition gives the constraints on what it means to rationally hold an intention. Intₐ(I) is a BDI-specific operator, not reducible to □ or ♢ by the □ alone. Defined formally in Section 7.</td></tr>
+  <tr><td class="fm-cell">Bel_a(φ)</td><td class="fm-cell">Bᵃφ</td><td>Agent a believes φ</td></tr>
+  <tr><td class="fm-cell">K(φ)</td><td class="fm-cell">Kᵃφ</td><td>Agent a knows φ</td></tr>
+</table>
+
+<div class="qb">
+  <div class="qq">Agent alice uses belief system KD45 (no Axiom T). She believes "the treasure is in room A." The treasure is actually in room B. Is this a contradiction in KD45?</div>
+  <button class="qo" data-c="0" onclick="ans(this,false)">Yes — if she believes it, it must be true</button>
+  <button class="qo" data-c="1" onclick="ans(this,true)">No — KD45 has no Axiom T, so Bᵢφ does not imply φ, and false beliefs are consistent</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">It depends on whether the belief is justified</button>
+  <div class="fb">No contradiction. KD45 does not include Axiom T, so Bᵢφ ⟹ φ does not hold. Alice's belief can be false — that is precisely what distinguishes belief (KD45) from knowledge (KT45). In KT45, Kᵢ(treasure_in_A) ⟹ treasure_in_A, making the scenario a contradiction. In KD45, Bᵢ(treasure_in_A) is perfectly consistent with the treasure actually being in room B.</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 6 -->
+<div id="s-bounded" class="sec">
+<span class="tag tp">limitations</span>
+<h2>Section 6 — the logical omniscience problem and bounded reasoning</h2>
+
+<p>Standard epistemic logic has a well-known and serious problem when applied to real agents: it implies agents are <strong>logically omniscient</strong>.</p>
+
+<h3>What logical omniscience means</h3>
+
+<p>In standard possible-worlds semantics, two properties follow automatically:</p>
+
+<div class="fm">Necessitation rule:
+  If ⊨ φ (φ is a tautology, valid in all models)
+  then ⊨ Kᵢφ (every agent knows every tautology)
+
+Closure under logical consequence:
+  If Kᵢφ and Kᵢ(φ ⟹ ψ)
+  then Kᵢψ
+  (agents automatically know all consequences of what they know)</div>
+
+<p>The result: an agent that knows the axioms of arithmetic "knows" every provable theorem — including theorems that have never been proved and that mathematicians spend careers on. No real agent, human or artificial, works this way.</p>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.4rem">Aside — Gödel's incompleteness theorem and logical omniscience</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Gödel's First Incompleteness Theorem (introduced in Section 1) gives a second, deeper reason why logical omniscience is unrealistic — beyond the obvious problem of infinite computation.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Standard epistemic logic assumes agents know all logical consequences of their beliefs. But if an agent's beliefs include the axioms of arithmetic, Gödel guarantees that some of those consequences are <em>true but unprovable</em> — no derivation of any finite length can reach them. So the assumption that agents know all consequences is not merely computationally unrealistic: it is logically impossible for any consistent system powerful enough to express arithmetic.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">This means the logical omniscience problem has two distinct layers:</p>
+  <p style="font-size:13px;margin-bottom:.3rem"><strong>Layer 1 — computational:</strong> even for consequences that are provable, a real agent has finite time and memory and cannot derive all of them.</p>
+  <p style="font-size:13px;margin-bottom:.5rem"><strong>Layer 2 — logical (Gödel):</strong> for systems expressive enough to include arithmetic, some true consequences are not provable at all — no agent, no matter how powerful, can derive them within the system.</p>
+  <p style="font-size:13px;margin:0">Konolige's bounded deduction model (below) addresses both layers at once: by restricting the agent to a finite rule set r applied to an explicit belief database Δ, the agent is neither expected to derive all provable consequences nor capable of reaching unprovable ones. The deductive closure close(Δ, r) is well-defined and reachable — though not necessarily finite, since some rule sets r can generate new propositions indefinitely.</p>
+</div>
+
+<div class="warn-card"><p><strong>For any realistic BDI agent:</strong> when formalizing a BDI proof using standard modal logic, you cannot simply assert □Bₐ and □Iₐ without acknowledging the logical omniscience problem. Acknowledge it explicitly and explain how you are restricting the agent's reasoning capacity — typically via Konolige's bounded deduction model.</p></div>
+
+<h3>Three approaches to addressing logical omniscience</h3>
+
+<h4>Approach 1 — Konolige's deduction model: bounding the agent's inference</h4>
+
+<p>Replace the possible-worlds definition of belief with an explicit deduction structure:</p>
+
+<div class="defn">
+  <div class="defn-term">Definition — deduction structure</div>
+  <p>A deduction structure for agent a is a pair d = (Δ, r) where:<br>
+  Δ is a finite set of propositions that the agent explicitly holds as beliefs — the belief database.<br>
+  r is a finite set of inference rules that the agent can apply — possibly a strict subset of all valid inference rules.</p>
+</div>
+
+<div class="fm">The agent a believes φ if and only if φ is derivable from Δ using only the rules in r:
+
+  Belₐ(φ)  ⟺  φ ∈ close(Δ, r)
+
+where close(Δ, r) = { φ | Δ ⊢ᵣ φ }
+  = the set of all propositions derivable from Δ using rules r
+  = the deductive closure of Δ under r</div>
+
+<p>This directly models resource-bounded reasoning. The agent only "knows" what it can actually compute from its explicit beliefs using its available rules. Consequences that require rules not in r — or derivation chains too long to compute — are simply not in the agent's belief set.</p>
+
+<h4>Approach 2 — Levesque's explicit/implicit belief distinction</h4>
+
+<div class="fm">ExpBel(φ) — explicit belief: φ is directly stored in Δ (the belief database)
+ImpBel(φ) — implicit belief: φ is logically entailed by explicit beliefs but not stored
+
+Agents are only held responsible for what they explicitly believe,
+not for all logical consequences of their beliefs.</div>
+
+<h4>Approach 3 — Fagin and Halpern's awareness logic</h4>
+
+<div class="fm">Add an awareness set A(i, w) ⊆ {formulas} for agent i at world w.
+Agent i knows φ at w only if φ ∈ A(i, w) — the agent is "aware" of φ as a concept.
+This restricts omniscience by limiting which formulas the agent even considers.</div>
+
+<h3>How to apply Konolige's model in practice</h3>
+
+<div class="green-card">
+  <p style="margin-bottom:.4rem"><strong>Applying Konolige's model to BDI reasoning:</strong></p>
+  <p>When formalizing a BDI agent, state explicitly that it operates under a bounded deduction structure (Δ, r). Belief □Bₐ and intention □Iₐ hold only within the deductive closure close(Δ, r) — not over all logical consequences. Agent a does not automatically know every consequence of its beliefs; only those reachable by applying the rules in r to the database Δ. This restricts BDI reasoning to resource-bounded, computationally tractable agents and avoids the logical omniscience problem.</p>
+</div>
+
+<div class="qb">
+  <div class="qq">An agent knows the axioms of Euclidean geometry. Under Konolige's deduction model, does it automatically believe every theorem of Euclidean geometry?</div>
+  <button class="qo" data-c="0" onclick="ans(this,false)">Yes — they all follow by logical consequence from the axioms</button>
+  <button class="qo" data-c="1" onclick="ans(this,true)">No — only theorems derivable using the agent's finite rule set r are in close(Δ, r)</button>
+  <button class="qo" data-c="0" onclick="ans(this,false)">It depends on whether the theorems are true</button>
+  <div class="fb">No. Under Konolige's model, Belₐ(φ) ⟺ φ ∈ close(Δ, r). The rule set r is finite and may not include all valid inference rules. Theorems requiring derivation steps not in r — or requiring too many steps — are simply not in the agent's belief set. This is the point: real computational agents have bounded inference capacity, and Konolige's model captures that directly.</div>
+</div>
+</div>
+
+
+<!-- ===================================================== SECTION 7 -->
+<div id="s-bdi" class="sec">
+<span class="tag ta">synthesis</span>
+<h2>Section 7 — Belief-Desire-Intention (BDI) formalized in modal logic</h2>
+
+<p>This section brings together everything from Sections 1–6 to formalize the Belief-Desire-Intention (BDI) framework in modal logic. It develops the rationality principle — the formal statement that a rational agent with consistent beliefs, desires, and intentions will act to fulfill those intentions in every accessible world — and works through the derivation step by step.</p>
+
+<h3>Formalizing the three BDI states</h3>
+
+<div class="blue-card">
+  <p style="font-size:13px;font-weight:600;margin-bottom:.4rem">Notation note — accessibility relations in this tutorial</p>
+  <p style="font-size:13px;margin-bottom:.3rem">Three notations for accessibility relations appear across sections, each appropriate to its context:</p>
+  <ul style="font-size:13px;margin:.3rem 0;padding-left:1.2rem">
+    <li><strong>R</strong> and <strong>wRw₁</strong> (Sections 2–4) — the general single-agent case, before any specific agent is named.</li>
+    <li><strong>Rᵢᴷ</strong> / <strong>Rᵢᴮ</strong> and <strong>wRᵢᴷw₁</strong> / <strong>wRᵢᴮw₁</strong> (Section 5) — multi-agent epistemic logic, distinguishing epistemic (knowledge) and doxastic (belief) accessibility relations for agent i.</li>
+    <li><strong>Rₐ</strong> and <strong>wRₐw₁</strong> (this section) — the BDI formalization for a specific agent named a. In this section, <strong>Rₐ is a doxastic accessibility relation</strong> — the worlds agent a considers possible given its beliefs. It satisfies KD45: serial, transitive, and Euclidean, but not reflexive. False beliefs are explicitly permitted: the actual world w need not be among the worlds a considers possible.</li>
+  </ul>
+  <p style="font-size:13px;margin:0">All three mean the same underlying thing: the set of worlds the agent considers possible from the current world. The notation changes only to match the name of the agent in each context.</p>
+</div>
+
+<div class="defn">
+  <div class="defn-term">Definition — Beliefs, Desires, Intentions in modal logic</div>
+  <p>Let a be an agent. Let B, D, I be propositions representing the content of a's belief, desire, and intention respectively. Let w be the current world and Rₐ be a's accessibility relation — the set of worlds a considers possible from w.</p>
+  <p><strong>Notational convention:</strong> the subscript a on Bₐ, Iₐ, Dₐ, Desₐ, Intₐ indicates that these are the propositional contents as held by agent a — distinguishing them from another agent's belief, intention, or desire in a multi-agent system. The propositions B, I, D themselves are plain propositions (goal states, facts about the world). The subscript a marks whose mental state we are describing. So □Bₐ means "the proposition Bₐ — B as held by agent a — is true in all worlds a considers possible," which is equivalent to saying "agent a believes B."</p>
+</div>
+
+<div class="fm"><strong>Beliefs:   □Bₐ</strong>
+  In every world w₁ that a considers possible (every w₁ such that wRₐw₁),
+  agent a believes the proposition B is true in w₁ according to a's model
+  of the world. The actual world w need not be among the worlds a considers
+  possible (system KD45, no Axiom T), so B may be false in the actual world
+  even though a believes B. False beliefs are explicitly permitted.
+
+<strong>Desires:   Desₐ(D)</strong>
+  a wants to bring about D. Desire cannot be expressed using □ or ♢ alone,
+  because those operators describe what the agent believes is the case —
+  not what the agent wants to be the case. Wanting is a different kind of
+  mental attitude, requiring its own operator (Desₐ) with its own semantics,
+  separate from the belief accessibility relation Rₐ.
+  Feasibility constraint: ♢Dₐ must hold — D is true in at least one world
+  w₁ such that wRₐw₁. a is a rational agent and only desires what it
+  considers achievable. But ♢Dₐ is a necessary condition for desire, not a
+  definition of it: considering D possible does not mean wanting D.
+
+<strong>Intentions: □Iₐ</strong>
+  Iₐ is true in every world w₁ such that wRₐw₁. Agent a is committed to I —
+  the intention holds in all worlds a considers possible.
+  Note: □Iₐ is the semantic definition of holding intention I. A separate
+  rationality constraint (the BDI consistency condition, defined below)
+  further requires: Intₐ(I) ⟹ Desₐ(I) ∧ ¬Bₐ(¬I). These are two distinct
+  statements — the first defines what □Iₐ means in possible worlds terms;
+  the second is a coherence condition on what it means to rationally hold
+  an intention.</div>
+
+<div class="warn-card">
+  <p style="font-size:12px;font-weight:700;color:#78350f;margin-bottom:.4rem">Why desire is not simply ♢Dₐ</p>
+  <p style="font-size:13px;margin-bottom:.5rem">A common notation error is to write ♢Dₐ for desire. But ♢Dₐ means "D is possible — D holds in at least one world a considers accessible." Possibility and desire are entirely different attitudes. An agent can consider it possible that it will rain without desiring rain at all. Conversely, an agent might desire something it considers impossible — though a <em>rational</em> agent would not.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">Desire properly belongs to <strong>deontic logic</strong> — from the ancient Greek <em>deon</em> (δέον), meaning "that which is binding" or "duty" — the modal logic of goals, obligations, and permissions, where operators mean "it ought to be the case that" or "it is desired that," not "it is possible that." A full BDI formalization uses a separate desire operator Desₐ(D), not reducible to □ or ♢ without additional machinery.</p>
+  <p style="font-size:13px;margin:0">The correct relationship is: ♢Dₐ is a <em>necessary condition</em> for rational desire — a rational agent Desₐ(D) only if ♢Dₐ also holds (the agent considers D achievable). But necessity is not sufficiency: ♢Dₐ does not imply Desₐ(D). We use Desₐ(D) for desire and note the feasibility constraint ♢Dₐ separately wherever it is needed.</p>
+</div>
+
+<h3>The BDI consistency condition</h3>
+
+<p>This is the formal link between intentions and the other BDI states, due to Cohen and Levesque (1990):</p>
+
+<div class="fm">Intₐ(φ)  ⟹  Desₐ(φ)  ∧  ¬Bₐ(¬φ)
+
+Reading each part:
+  Intₐ(φ)    "Agent a intends φ"
+  Desₐ(φ)    "Agent a desires φ"      you must want what you intend
+  ¬Bₐ(¬φ)   "Agent a does not believe ¬φ"
+               you must not believe your intention is impossible
+               (because Bₐ(¬φ) would mean a believes φ cannot hold)</div>
+
+<p>This gives us a fundamental containment relationship between the sets of intentions and desires. Let I denote the set of all things agent a currently intends, and D the set of all things agent a currently desires. Then:</p>
+
+<div class="fm">I ⊆ D
+
+The set of current intentions is a subset of the set of current desires.
+Every intention must be backed by a corresponding desire — you cannot intend
+something you do not desire. The reverse does not hold: D is typically much
+larger than I, since an agent can desire many things simultaneously, including
+things that are mutually incompatible, aspirational, or low priority.
+Intentions are the subset of desires the agent has committed to acting on now,
+filtered for consistency and feasibility.</div>
+
+<div class="card" style="border-left:4px solid #a78bfa">
+  <p style="font-size:12px;font-weight:700;color:#6d28d9;letter-spacing:.03em;margin-bottom:.4rem">How does an agent form an intention? — Cohen &amp; Levesque (1990)</p>
+  <p style="font-size:13px;margin-bottom:.5rem">The BDI consistency condition tells us what must be true <em>once</em> an intention is held. But how does an agent arrive at an intention in the first place? Intention formation is the upstream process that produces the premises □Bₐ, Desₐ(D), and □Iₐ that the BDI rationality derivation takes as given.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">In the Cohen &amp; Levesque formalization, intention formation is not modeled as a single operator — it is captured by the conditions under which Intₐ(I) becomes true. Roughly: the agent adopts Intₐ(I) when it has Desₐ(I), believes I is achievable (¬Bₐ(¬I)), and has selected I from competing desires via its planning process. Each of these maps directly onto a condition:</p>
+  <ul style="font-size:13px;margin-bottom:.5rem;padding-left:1.2rem">
+    <li><strong>Feasibility:</strong> the agent believes I is achievable — ¬Bₐ(¬I) holds. If the agent believes I is impossible, rational intention formation is blocked. This is exactly the ¬Bₐ(¬I) term in the consistency condition.</li>
+    <li><strong>Selection via the planning process:</strong> the agent's planning process filters competing desires and selects a consistent, executable subset to commit to. An agent cannot simultaneously intend everything it desires if those desires conflict — D may contain mutually incompatible desires; I must not. The planning process is what performs this selection, producing the I ⊆ D containment.</li>
+    <li><strong>Commitment:</strong> once selected, the agent stops deliberating about <em>whether</em> to pursue I and begins deliberating about <em>how</em>. Bratman (1987) calls this "settling the question." The commitment then persists — the agent does not abandon I merely because a competing desire arises, unless I is achieved or believed to have become impossible.</li>
+  </ul>
+  <p style="font-size:13px;margin:0">The BDI rationality derivation operates entirely downstream of this process. It takes the formed intention □Iₐ as a premise and reasons about what a rational agent does next — it does not model how the agent got there. Understanding intention formation clarifies why the BDI consistency condition has the shape it does: each term directly encodes one of the conditions above.</p>
+</div>
+
+<h3>The rationality principle</h3>
+
+<div class="defn">
+  <div class="defn-term">Definition — Act(a, I)</div>
+  <p><strong>Act(a, I)</strong> is a proposition meaning "agent a performs an action directed at fulfilling intention I." It is true in world w if agent a executes, in w, an action whose goal is to bring about the state described by proposition I. Act(a, I) is the bridge between the agent's cognitive states and observable behavior.</p>
+</div>
+
+<p>The rationality principle connects all three BDI components to action. It is important to understand the distinct role each plays:</p>
+
+<div class="g2">
+  <div class="mc"><div class="lb">Belief Bₐ — world model</div><div class="vl">Bₐ is not merely a feasibility check. It is the agent's model of the current state of the world, which informs <em>how</em> Act(a, I) is selected. An agent that believes the door is locked will choose a different action to fulfill "reach the other room" than one that believes the door is open. Belief guides action selection.</div></div>
+  <div class="mc"><div class="lb">Desire Desₐ(I) — motivation</div><div class="vl">Desire provides the motivational grounding for action. The agent acts to fulfill I because it desires the goal state that I brings about. Without desire, the agent would be mechanically executing intentions with no motivational basis. Desire is what makes the agent <em>want</em> to act.</div></div>
+  <div class="mc"><div class="lb">Intention Iₐ — commitment</div><div class="vl">Intention is the agent's commitment to act on a desire. It filters competing desires and commits the agent to a specific course of action. The agent does not just want I — it has decided to pursue I and will persist until I is achieved or believed impossible.</div></div>
+  <div class="mc"><div class="lb">Act(a, I) — behavior</div><div class="vl">The observable output: the action the agent performs in the world. It is determined jointly by what the agent believes (Bₐ), what it desires (Desₐ(I)), and what it is committed to (Iₐ).</div></div>
+</div>
+
+<div class="fm">Full rationality principle:
+
+  □Bₐ  ∧  Desₐ(I)  ∧  □Iₐ  ⟹  □(Act(a, I))
+
+If a holds beliefs Bₐ in every world it considers possible (□Bₐ),
+desires the goal state I (Desₐ(I)),
+and is committed to intention I in every world it considers possible (□Iₐ),
+then a rational agent performs an action Act(a, I) in every accessible world.
+
+The conclusion □(Act(a, I)) follows directly from the premises: because □Bₐ
+and □Iₐ already assert that Bₐ and Iₐ hold in every accessible world w₁,
+the rationality principle fires at each w₁ individually, giving Act(a, I)
+at each w₁. By the definition of □, that is exactly □(Act(a, I)).
+
+Note: Bₐ plays two roles:
+  (1) Feasibility: a does not believe I is impossible — ¬Bₐ(¬I) from the BDI consistency condition
+  (2) Action guidance: a uses Bₐ as a model of the world to select which specific
+      action will bring about I in the current situation.
+
+Implicit feasibility constraint: ¬Bₐ(¬I) is not a separate premise of the
+rationality principle — it is guaranteed implicitly by □Iₐ via the BDI
+consistency condition (Intₐ(I) ⟹ Desₐ(I) ∧ ¬Bₐ(¬I)). Whenever the agent
+holds intention I, it is already a rational requirement that the agent does
+not believe I to be impossible. The rationality principle inherits this
+constraint automatically; you do not need to assert ¬Bₐ(¬I) as an
+additional premise in your proof.</div>
+
+<div class="warn-card">
+  <p style="font-size:12px;font-weight:700;color:#78350f;margin-bottom:.4rem">Provenance of the rationality principle</p>
+  <p style="font-size:13px;margin:0">The formulation above is a pedagogical simplification inspired by Cohen &amp; Levesque (1990) and Rao &amp; Georgeff (1991), not a verbatim theorem from the literature. The canonical results in those papers use a richer temporal logic layer — operators like <em>BEFORE</em>, <em>UNTIL</em>, and <em>HAPPENS</em> — because intention and action play out over time: an agent commits to pursuing I <em>until</em> it is achieved or believed impossible, not just in a single snapshot of accessible worlds. That temporal machinery is beyond the scope of this tutorial. The principle as stated here captures the core idea faithfully at the level of standard modal logic. Do not cite it as a named theorem with a specific page reference.</p>
+</div>
+
+<h3>The BDI rationality statement — formalized</h3>
+
+<div class="fm">Natural language:
+  "If agent a believes B, desires D, and intends I,
+   then a must rationally act to fulfill I in all accessible worlds."
+
+Let:
+  B = the proposition a believes
+  D = the proposition a desires
+  I = the proposition a intends
+  Act(a, I) = "agent a performs an action directed at fulfilling intention I"
+               (defined formally above, before the rationality principle)
+
+Premises:
+  (1)  □Bₐ              a believes B — B holds in every world w₁ such that wRₐw₁
+  (2)  Desₐ(D)          a desires D — D is a goal state a wants to bring about.
+                     Feasibility constraint: ♢Dₐ holds — D is achievable in at least
+                     one world w₁ such that wRₐw₁. Note: ♢Dₐ is a necessary condition
+                     for rational desire, not a definition of it.
+  (3)  □Iₐ              a intends I — I holds in every world w₁ such that wRₐw₁
+
+Conclusion:
+  (4)  □(Act(a, I))    a acts to fulfill I in every accessible world
+
+Full formula:
+  (□Bₐ ∧ Desₐ(D) ∧ □Iₐ)  ⟹  □(Act(a, I))
+
+  where Desₐ(D) carries the feasibility constraint ♢Dₐ as a rational requirement.</div>
+
+<h3>The derivation</h3>
+
+<div class="warn-card">
+  <p style="font-size:12px;font-weight:700;color:#78350f;margin-bottom:.4rem">What this derivation is — and is not</p>
+  <p style="font-size:13px;margin-bottom:.5rem">The rationality principle — <span class="fm-inline">(□Bₐ ∧ Desₐ(I) ∧ □Iₐ) ⟹ □(Act(a, I))</span> — cannot be derived from modal logic alone. It is a <strong>defining axiom of rational agency</strong> in the BDI framework: it states what we mean by calling an agent rational. It is not proven from more primitive truths — it is adopted as a definition.</p>
+  <p style="font-size:13px;margin-bottom:.5rem">What the derivation <em>does</em> accomplish is demonstrate that the conclusion follows from this axiom together with:</p>
+  <ul style="font-size:13px;margin-bottom:.5rem;padding-left:1.2rem">
+    <li>the BDI consistency condition, which derives Desₐ(I) and ¬Bₐ(¬I) from □Iₐ</li>
+    <li>the I ⊆ D containment, which derives Desₐ(I) from Desₐ(D)</li>
+    <li>the semantics of □, which licenses the universalization to □(Act(a, I))</li>
+  </ul>
+  <p style="font-size:13px;margin:0">When presenting this formally, state: <em>"The rationality principle is adopted as a defining axiom of rational agency in the BDI framework. The derivation demonstrates that the conclusion follows from this axiom together with the BDI consistency condition and the semantics of □."</em></p>
+</div>
+
+<div class="step"><div class="dot dd">1</div><div class="sb">
+<div class="st">State the premises</div>
+<div class="sd">Unpack each □ premise using the truth condition: □φ is true at w if and only if φ is true in every world w₁ such that wRₐw₁. Apply this to:
+(1) □Bₐ
+(2) Desₐ(D)
+(3) □Iₐ</div>
+</div></div>
+
+<div class="step"><div class="dot dd">2</div><div class="sb">
+<div class="st">Derive Desₐ(I) from Desₐ(D) via I ⊆ D</div>
+<div class="sd">From the containment relation: I ⊆ D — every intention is backed by a corresponding desire. Since I ∈ D, Desₐ(I) follows directly from Desₐ(D). This closes the gap between the desire premise (stated for D) and the rationality principle (which requires Desₐ(I)).</div>
+</div></div>
+
+<div class="step"><div class="dot dd">3</div><div class="sb">
+<div class="st">Apply the BDI consistency condition to □Iₐ</div>
+<div class="sd">From the BDI consistency condition: Intₐ(I) ⟹ Desₐ(I) ∧ ¬Bₐ(¬I). Since □Iₐ holds, the consistency condition applies in every accessible world w₁, giving both Desₐ(I) (consistent with step 2) and ¬Bₐ(¬I) — the agent does not believe I is impossible. This feasibility constraint is implicit in holding the intention; it does not need to be asserted as a separate premise.</div>
+</div></div>
+
+<div class="step"><div class="dot dd">4</div><div class="sb">
+<div class="st">Apply the rationality principle at each accessible world</div>
+<div class="sd">In every world w₁ such that wRₐw₁: Bₐ holds (from □Bₐ), Desₐ(I) holds (step 2), and Iₐ holds (from □Iₐ). All three conjuncts of the rationality principle are satisfied. By Modus Ponens:
+
+  (□Bₐ ∧ Desₐ(I) ∧ □Iₐ)  ⟹  Act(a, I)</div>
+</div></div>
+
+<div class="step"><div class="dot dd">5</div><div class="sb">
+<div class="st">Universalize to obtain □(Act(a, I))  ∎</div>
+<div class="sd">From step 4, Act(a, I) holds in every world w₁ such that wRₐw₁. By the definition of □, this is exactly □(Act(a, I)). This is the conclusion:
+
+  (□Bₐ ∧ Desₐ(I) ∧ □Iₐ)  ⟹  □(Act(a, I))  ∎</div>
+</div></div>
+
+<div class="step"><div class="dot da">!</div><div class="sb">
+<div class="st">Logical omniscience — address for any realistic agent</div>
+<div class="sd">For any realistic BDI agent, state explicitly that it operates under a bounded deduction structure (Δ, r) per Konolige's model (Section 6). The premises □Bₐ and □Iₐ hold only within the deductive closure close(Δ, r) — not over all logical consequences. Agent a does not automatically know every consequence of its beliefs; only those derivable by applying the finite rule set r to the belief database Δ.</div>
+</div></div>
+
+<hr class="divider">
+<div class="blue-card"><p><strong>This tutorial has covered the full formal machinery of modal and epistemic logic.</strong> You have the syntax of modal operators (Section 3), their semantics via possible worlds (Section 2), the axioms and what they mean for the accessibility graph (Section 4), the knowledge/belief distinction (Section 5), the bounded reasoning framework (Section 6), and the BDI formalization (Section 7). These tools are sufficient to formalize and reason about any BDI agent operating in a multi-agent environment.</p></div>
+
+</div>
+
+</div><!-- end .wrap -->
+
+<script>
+function goTab(sec) {
+  var all = ['why','prop','worlds','modal','axioms','epistemic','bounded','bdi'];
+  for (var i = 0; i < all.length; i++) {
+    var s = document.getElementById('s-' + all[i]);
+    var b = document.getElementById('b-' + all[i]);
+    if (s) s.style.display = (all[i] === sec) ? 'block' : 'none';
+    if (b) b.className = 'nb' + (all[i] === sec ? ' on' : '');
+  }
+  window.scrollTo(0, 0);
+}
+
+function ans(el, correct) {
+  var block = el.parentNode;
+  if (block.querySelector('.ok') || block.querySelector('.no')) return;
+  el.className += correct ? ' ok' : ' no';
+  if (!correct) {
+    var opts = block.querySelectorAll('.qo');
+    for (var i = 0; i < opts.length; i++) {
+      if (opts[i] !== el && opts[i].getAttribute('data-c') === '1') {
+        opts[i].className += ' ok';
+      }
+    }
+  }
+  var fb = block.querySelector('.fb');
+  if (fb) fb.style.display = 'block';
+}
+</script>
+</body>
+</html>
